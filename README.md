@@ -1,5 +1,10 @@
 # Tara CPU SDK
 
+## OpenCV4-compatible fork
+Install OpenCV and the other dependencies. Type make in Source folder to build all examples and the library. Pointcloud is currently disabled due to deprecated PCL version dependency.
+
+## Old README:
+
 This package lets you build and install the Tara SDK package on various platforms. This package also lets you build and install various sample applications using the Tara SDK.
 
 ### Contents
