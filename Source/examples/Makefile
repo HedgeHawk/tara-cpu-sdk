@@ -10,7 +10,7 @@ BOLD=\033[1m
 
 
 #Building Targets
-default: samples applications imu pcl
+default: samples applications imu
 	@echo "\n${GREEN}${BOLD}SDK samples and applications build completed${NC}"	
 
 samples:

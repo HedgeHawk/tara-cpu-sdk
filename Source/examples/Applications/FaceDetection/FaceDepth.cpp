@@ -41,12 +41,12 @@ int FaceDepth::Init()
 	cout << " Rectangle around the detected faces with the depth is displayed!" << endl << " Only the left window is displayed!" << endl << endl;
 
 	//Loads the cascade file
-	FaceCascade = CascadeClassifier("//usr//local//tara-sdk//bin//Face//haarcascade_frontalface_alt2.xml");
+	FaceCascade = CascadeClassifier("haarcascade_frontalface_alt2.xml");
 
 	//If the file is not loaded properly
 	if(FaceCascade.empty())
 	{		
-		cout << "\n\nError : haarcascade_frontalface_alt2.xml File Missing in the path /usr/local/tara-sdk/bin/Face!\n";		
+		cout << "\n\nError : haarcascade_frontalface_alt2.xml File Missing\n";		
 		return FALSE;
 	}
 	

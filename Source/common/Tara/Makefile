@@ -4,7 +4,6 @@
 #Variables and Constants
 CC=g++
 OUTPUT=libecon_tara.so
-OPENCV_INSTALL_PREFIX=/usr/local/tara-opencv
 
 #Formatting options
 RED=\033[0;31m
@@ -14,7 +13,7 @@ NC=\033[0m # No Color
 BOLD=\033[1m
 
 #Includes and libs
-CFLAGS=-I ./../include -I $(OPENCV_INSTALL_PREFIX)/include `pkg-config --cflags glib-2.0`
+CFLAGS=-I ./../include `pkg-config --cflags glib-2.0` `pkg-config --cflags --libs opencv4`
 LIBS=-ludev -lv4l2
 
 

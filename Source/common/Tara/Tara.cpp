@@ -74,8 +74,8 @@ BOOL TaraCamParameters::LoadCameraMatrix()
 	
 	FILE *IntFile=NULL, *ExtFile=NULL;
 
-	IntFile = fopen("//usr//local//tara-sdk//bin//intrinsics.yml", "wb");
-	ExtFile = fopen("//usr//local//tara-sdk//bin//extrinsics.yml", "wb");
+	IntFile = fopen("intrinsics.yml", "wb");
+	ExtFile = fopen("extrinsics.yml", "wb");
 
 	if(IntFile == NULL || ExtFile == NULL)
 	{
@@ -103,11 +103,11 @@ BOOL TaraCamParameters::LoadCameraMatrix()
 	fclose(ExtFile);
 
 	
-	const char* intrinsic_filename = "//usr//local//tara-sdk//bin//intrinsics.yml";
-	const char* extrinsic_filename = "//usr//local//tara-sdk//bin//extrinsics.yml";
+	const char* intrinsic_filename = "intrinsics.yml";
+	const char* extrinsic_filename = "extrinsics.yml";
 
 	//reading intrinsic parameters
-	cv::FileStorage fs(intrinsic_filename, CV_STORAGE_READ);
+	cv::FileStorage fs(intrinsic_filename, cv::FileStorage::READ);
 	if(!fs.isOpened())
 	{
 		if(DEBUG_ENABLED)
@@ -121,7 +121,7 @@ BOOL TaraCamParameters::LoadCameraMatrix()
     fs["D2"] >> D2;
 
 	// reading Extrinsic parameters
-	fs.open(extrinsic_filename, CV_STORAGE_READ);
+	fs.open(extrinsic_filename, cv::FileStorage::READ);
 	if(!fs.isOpened())
 	{
 		if(DEBUG_ENABLED)
@@ -228,7 +228,7 @@ BOOL Disparity::InitCamera(bool GenerateDisparity, bool FilteredDisparityMap)
 	}
 
 	//Open the device selected by the user.
-	_CameraDevice.open(DeviceID);
+	_CameraDevice.open(DeviceID,cv::CAP_V4L2);
 		
 	//Camera Device
 	if(!_CameraDevice.isOpened())
@@ -239,22 +239,22 @@ BOOL Disparity::InitCamera(bool GenerateDisparity, bool FilteredDisparityMap)
 	
 	if (DEFAULT_FRAME_WIDTH == ImageSize.width && DEFAULT_FRAME_HEIGHT == ImageSize.height)
 	{
-		_CameraDevice.set(CV_CAP_PROP_FRAME_WIDTH, 752);
-		_CameraDevice.set(CV_CAP_PROP_FRAME_HEIGHT, 480);
+		_CameraDevice.set(cv::CAP_PROP_FRAME_WIDTH, 752);
+		_CameraDevice.set(cv::CAP_PROP_FRAME_HEIGHT, 480);
 	}
 
 	//Setting up Y16 Format
-	_CameraDevice.set(CV_CAP_PROP_FOURCC, CV_FOURCC('Y', '1', '6', ' '));
+	_CameraDevice.set(cv::CAP_PROP_FOURCC, cv::VideoWriter::fourcc('Y', '1', '6', ' '));
 
 	//Setting up FrameRate
-	_CameraDevice.set(CV_CAP_PROP_FPS, FRAMERATE);
+	_CameraDevice.set(cv::CAP_PROP_FPS, FRAMERATE);
 
 	//Setting width and height
-	_CameraDevice.set(CV_CAP_PROP_FRAME_WIDTH, ImageSize.width);
-	_CameraDevice.set(CV_CAP_PROP_FRAME_HEIGHT, ImageSize.height);
+	_CameraDevice.set(cv::CAP_PROP_FRAME_WIDTH, ImageSize.width);
+	_CameraDevice.set(cv::CAP_PROP_FRAME_HEIGHT, ImageSize.height);
 	
 	//y16 format support
-	_CameraDevice.set(CV_CAP_PROP_CONVERT_RGB, 0);
+	_CameraDevice.set(cv::CAP_PROP_CONVERT_RGB, 0);
 
 	//Init the extension units
 	if(!InitExtensionUnit(_CameraEnumeration.DeviceInfo))
@@ -311,7 +311,7 @@ BOOL Disparity::GrabFrame(cv::Mat *LeftImage, cv::Mat *RightImage)
 			
 	//Splitting the data
 	split(InterleavedFrame, StereoFrames);
-
+	
 	//Rectify Frames
 	_TaraCamParameters.RemapStereoImage(StereoFrames[0], StereoFrames[1], LeftImage, RightImage);
 
@@ -437,7 +437,7 @@ BOOL Disparity::SetAlgorithmParam()
 		bm_left->setSpeckleWindowSize(bm_speckleWindowSize);
 		bm_left->setSpeckleRange(bm_speckleRange);
 		bm_left->setDisp12MaxDiff (bm_disp12MaxDiff);
-		bm_left->setPreFilterType(CV_STEREO_BM_XSOBEL);
+		bm_left->setPreFilterType(cv::StereoBM::PREFILTER_XSOBEL);
 	}
 	else //STEREO_3WAY
 	{
@@ -679,7 +679,7 @@ BOOL Disparity::SetAutoExposure()
 BOOL Disparity::SetBrightness(double BrightnessVal)
 {
 	//Sets the brightness of the Camera
-	return _CameraDevice.set(CV_CAP_PROP_BRIGHTNESS, BrightnessVal);	 
+	return _CameraDevice.set(cv::CAP_PROP_BRIGHTNESS, BrightnessVal);	 
 }
 
 //Sets the Stream Mode of the  camera

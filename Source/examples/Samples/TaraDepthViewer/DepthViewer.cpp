@@ -245,7 +245,7 @@ int DepthViewer::CameraStreaming()
 //Call back function
 void DepthPointSelection(int MouseEvent, int x, int y, int flags, void* param)
 {
-    if(MouseEvent == CV_EVENT_LBUTTONDOWN)  //Clicked
+    if(MouseEvent == cv::EVENT_LBUTTONDOWN)  //Clicked
 	{
 		g_SelectedPoint = Point(x, y);
     }
